@@ -1,6 +1,6 @@
 # This is my second Knowledge Check of Code Louisville!
 
-## First Assignment:
+## Assignment:
 For this assigment im going to clean some data. I would guess about 70% of data science is cleaning and wrangling data, so we want to make sure I can do it. I haven't looked through this data set at all, so we'll see if we can find some issues to clean up. 
 
 ## Instructions:
