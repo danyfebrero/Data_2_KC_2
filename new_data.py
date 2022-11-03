@@ -64,6 +64,16 @@ def cleaning_data(retainers_df, beauties_df):
         'Max Banner': 'Max_Banner'
         }, inplace=True)
 
+    for index, row in retainers_df.iterrows():   
+        if len(row['Grade'].split(", ")) > 1:
+            new_row = row
+            grades = new_row['Grade'].split(", ")
+            retainers_df.loc[index,['Grade']] = grades[0]
+            grades.pop(0)
+            for grade in grades:
+                new_row['Grade'] = grade
+                retainers_df.loc[len(retainers_df.index)] = new_row
+
     return(retainers_df, beauties_df)
         
 def save_json(retainers_df, beauties_df, bond_df):
@@ -71,10 +81,6 @@ def save_json(retainers_df, beauties_df, bond_df):
     data['retainers'] = json.loads(retainers_df.to_json(orient='index'))
     data['beauties'] = json.loads(beauties_df.to_json(orient='index'))
     data['bonds'] = json.loads(bond_df.to_json(orient ='index'))
-    #df1_json = retainers_df.to_json(orient ='index')
-    #df2_json = beauties_df.to_json(orient ='index')
-    #df3_json = bond_df.to_json(orient ='index')
-    #out = {'Retainers': df1_json, 'Beauties': df2_json, 'Bonds': df3_json}
     filename = 'trading_legend.json'
     with open (filename,'w') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
@@ -99,6 +105,7 @@ def main():
     retainers_df, beauties_df = load_file(DATA_FILE)
     print('Creating tables...')
     bond_df = create_bond_table(retainers_df)
+    print('Cleaning data...')
     retainers_df, beauties_df = cleaning_data(retainers_df, beauties_df)
     print('Exporting data...')
     save_json(retainers_df, beauties_df, bond_df)
