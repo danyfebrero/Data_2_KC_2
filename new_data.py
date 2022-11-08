@@ -12,7 +12,6 @@ import json
 
 DATA_FILE = r'new_data.xlsx'
 
-
 def load_file(filename):
     """ 
         Does: Loads the tables in the file to dataframes\n
@@ -78,9 +77,9 @@ def cleaning_data(retainers_df, beauties_df):
         
 def save_json(retainers_df, beauties_df, bond_df):
     data = {}
-    data['retainers'] = json.loads(retainers_df.to_json(orient='index'))
-    data['beauties'] = json.loads(beauties_df.to_json(orient='index'))
-    data['bonds'] = json.loads(bond_df.to_json(orient ='index'))
+    data['retainers'] = retainers_df.to_dict(orient='index')
+    data['beauties'] = beauties_df.to_dict(orient='index')
+    data['bonds'] = bond_df.to_dict(orient='index')
     filename = 'trading_legend.json'
     with open (filename,'w') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
@@ -95,7 +94,7 @@ def save_xlsx(retainers_df, beauties_df, bond_df):
         beauties_df.to_excel(writer, sheet_name="Beauties")
         bond_df.to_excel(writer, sheet_name="Bonds") 
 
-def main():
+def process_xlms():
     """ 
         Does: loads the dataframes
         Arguments explanation:
@@ -112,6 +111,9 @@ def main():
     save_xlsx(retainers_df, beauties_df, bond_df)
     print('Done.')
     
+def main():
+
+    process_xlms()
 
 if __name__ == '__main__':
     main()
